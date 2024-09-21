@@ -1,21 +1,24 @@
 import { useState , useContext} from "react"
 import GithubContext from "../../contexts/github/GithubContext"
+import AlertContext from "../../contexts/alert/AlertContext";
 
 const SearchUsers = () => {
-    const {users , fetchUsers} = useContext(GithubContext);
+    const {users , fetchUsers , setClear} = useContext(GithubContext);
+    const {setAlert} = useContext(AlertContext);
 
     const [text , setText] = useState('')
     const handleSubmit = (e)=>{
         e.preventDefault();
 
         if(text === ''){
-            alert('please Enter something')
+            setAlert('Please Enter something' , 'error')
         }
         else{
             fetchUsers(text);
             setText('');
         }
     }
+  
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 mb-8 gap-8">
             <div>
@@ -38,9 +41,10 @@ const SearchUsers = () => {
                     </div>
                 </form>
             </div>
-            {users.lenght > 0 && 
+            {
+            users.length > 0 && 
             <div>
-                <button className="btn btn-ghost btn-lg">clear</button>
+                <button className="btn btn-ghost btn-lg" onClick={setClear}>clear</button>
             </div>
             }
         </div>
